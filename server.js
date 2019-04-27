@@ -11,6 +11,6 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.listen(8080, () => {
-  console.log("listening on http://localhost:8080");
+app.listen(3333, "0.0.0.0", () => {
+  console.log("listening on http://localhost:3333");
 });

@@ -10,15 +10,15 @@ function dragElement(elmnt, name) {
     pos3 = e.clientX;
     pos4 = e.clientY;
     document.onmouseup = closeDragElement;
-    document.ontouchup = closeDragElement;
+    document.ontouchend = closeDragElement;
     // call a function whenever the cursor moves:
     document.onmousemove = elementDrag;
-    document.ontouchend = elementDrag;
+    document.ontouchmove = elementDrag;
   }
 
   function elementDrag(e) {
     e = e || window.event;
-    e.preventDefault();
+    // e.preventDefault();
 
     // calculate the new cursor position:
     var diffX = e.clientX - (elmnt.offsetLeft * 2 + elmnt.offsetWidth) / 2;

@@ -56,26 +56,50 @@ function Game() {
   this._cardsOnDeck = [];
   this._players = [];
   this._mainPlayer = new Player([]);
+  this._deck = new Deck();
   this.initEventListener();
   this.initNewCardButton();
   this.initReshuffleButton();
   this.initUndoButton();
+  this.firstInitialCard();
 }
 
 _p = Game.prototype;
 
+_p.firstInitialCard = function() {
+  var firstCard = "";
+  var index = -1;
+
+  // select proper first card
+  while (
+    firstCard === "" ||
+    firstCard.includes("2") ||
+    firstCard.includes("3") ||
+    firstCard.includes("J") ||
+    firstCard.includes("A")
+  ) {
+    index = Math.floor(Math.random() * this._availableCards.length);
+    firstCard = this._availableCards[index];
+  }
+
+  this._cardsOnDeck.push(firstCard);
+  this._availableCards.splice(index, 1);
+
+  this._deck.renderCard(firstCard);
+};
+
 _p.initEventListener = function() {
   // on card thrown
   document.addEventListener("carddropped", e => {
-    this._mainPlayer.deleteCard(e.detail.name);
-    this._mainPlayer.setLastThrownCard(e.detail.name);
     this.addCardOnDeck(e.detail.name);
   });
 };
 
 _p.addCardOnDeck = function(name) {
+  this._mainPlayer.deleteCard(name);
+  this._mainPlayer.setLastThrownCard(name);
   this._cardsOnDeck.push(name);
-  console.log(this._cardsOnDeck);
+  this._deck.renderCard(name);
   // to do: implement deck
 };
 
@@ -94,17 +118,19 @@ _p.initNewCardButton = function() {
 _p.initReshuffleButton = function() {
   var button = document.getElementsByClassName("reshuffle")[0];
   button.addEventListener("click", () => {
-    console.log("przed: ", this._availableCards, this._cardsOnDeck);
+    // console.log("przed: ", this._availableCards, this._cardsOnDeck);
     if (this._cardsOnDeck.length > 1) {
       for (i = this._cardsOnDeck.length - 2; i >= 0; i--) {
         this._availableCards.push(this._cardsOnDeck[i]);
         this._cardsOnDeck.splice(i, 1);
       }
+
+      this._deck.removeAllCardsExceptTop();
     } else {
       // to do, information
       console.log("There is no card to reshuffle!");
     }
-    console.log("po: ", this._availableCards, this._cardsOnDeck);
+    // console.log("po: ", this._availableCards, this._cardsOnDeck);
   });
 };
 
@@ -112,7 +138,7 @@ _p.initUndoButton = function() {
   var button = document.getElementsByClassName("undo")[0];
   button.addEventListener("click", () => {
     var lastThrown = this._cardsOnDeck[this._cardsOnDeck.length - 1];
-    // if card on the deck is last that player threw
+    // if card on the deck is the same as last thrown by user
     if (
       this._mainPlayer.getLastThrownCard() === lastThrown &&
       this._cardsOnDeck.length > 1
@@ -121,6 +147,7 @@ _p.initUndoButton = function() {
       this._availableCards.push(lastThrown);
       this._cardsOnDeck.splice(this._cardsOnDeck.length - 1, 1);
       this.addCardToMainPlayer(this._availableCards.length - 1);
+      this._deck.removeLastCard();
     } else {
       // to do, information
       console.log("Could not return last move.");
