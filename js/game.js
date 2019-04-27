@@ -68,6 +68,7 @@ _p.initEventListener = function() {
   // on card thrown
   document.addEventListener("carddropped", e => {
     this._mainPlayer.deleteCard(e.detail.name);
+    this._mainPlayer.setLastThrownCard(e.detail.name);
     this.addCardOnDeck(e.detail.name);
   });
 };
@@ -82,7 +83,7 @@ _p.initNewCardButton = function() {
   var button = document.getElementsByClassName("new-card")[0];
   button.addEventListener("click", () => {
     if (this._availableCards.length > 0) {
-      this.addCardToMainPlayer();
+      this.addCardToMainPlayer(-1);
     } else {
       // to do, information
       console.log("There is no card on the deck!");
@@ -107,7 +108,25 @@ _p.initReshuffleButton = function() {
   });
 };
 
-_p.initUndoButton = function() {};
+_p.initUndoButton = function() {
+  var button = document.getElementsByClassName("undo")[0];
+  button.addEventListener("click", () => {
+    var lastThrown = this._cardsOnDeck[this._cardsOnDeck.length - 1];
+    // if card on the deck is last that player threw
+    if (
+      this._mainPlayer.getLastThrownCard() === lastThrown &&
+      this._cardsOnDeck.length > 1
+    ) {
+      // remove last card from the deck and add one to available cards
+      this._availableCards.push(lastThrown);
+      this._cardsOnDeck.splice(this._cardsOnDeck.length - 1, 1);
+      this.addCardToMainPlayer(this._availableCards.length - 1);
+    } else {
+      // to do, information
+      console.log("Could not return last move.");
+    }
+  });
+};
 
 _p.startGame = function() {};
 
@@ -118,18 +137,20 @@ _p.addPlayer = function() {};
 _p.startGame = function() {
   // choose cards
   for (var i = 0; i < 5; i++) {
-    this.addCardToMainPlayer();
+    this.addCardToMainPlayer(-1);
   }
 };
 
-_p.addCardToMainPlayer = function() {
+_p.addCardToMainPlayer = function(num) {
   var node = document.getElementsByClassName("cards-wrapper")[0];
-
-  // choose random card and remove it from availableCards array
-  var random = Math.floor(Math.random() * this._availableCards.length);
-  var name = this._availableCards[random]; // card symbol, i. e. "2D", "3D"...
+  var number;
+  if (num === -1) {
+    // choose random card and remove it from availableCards array
+    var number = Math.floor(Math.random() * this._availableCards.length);
+  } else number = num;
+  var name = this._availableCards[number]; // card symbol, i. e. "2D", "3D"...
   this._mainPlayer.addCard(name);
-  this._availableCards.splice(random, 1);
+  this._availableCards.splice(number, 1);
 
   // insert element into cards-wrapper
   node.appendChild(this._mainPlayer.getLastCard().getElement());

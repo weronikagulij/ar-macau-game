@@ -33,3 +33,7 @@ _p.getLastCard = function() {
 _p.setLastThrownCard = function(name) {
   this._lastThrownCard = name;
 };
+
+_p.getLastThrownCard = function() {
+  return this._lastThrownCard;
+};
