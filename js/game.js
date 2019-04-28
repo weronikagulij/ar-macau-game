@@ -57,11 +57,11 @@ function Game() {
   this._players = [];
   this._mainPlayer = new Player([]);
   this._deck = new Deck();
-  this.initEventListener();
-  this.initNewCardButton();
-  this.initReshuffleButton();
-  this.initUndoButton();
-  this.firstInitialCard();
+  // this.initEventListener();
+  // this.initNewCardButton();
+  // this.initReshuffleButton();
+  // this.initUndoButton();
+  // this.firstInitialCard();
 }
 
 _p = Game.prototype;
@@ -86,6 +86,8 @@ _p.firstInitialCard = function() {
   this._availableCards.splice(index, 1);
 
   this._deck.renderCard(firstCard);
+
+  this._deck.renderCardsToTake(this._availableCards.length);
 };
 
 _p.initEventListener = function() {
@@ -107,6 +109,7 @@ _p.initNewCardButton = function() {
   var button = document.getElementsByClassName("new-card")[0];
   button.addEventListener("click", () => {
     if (this._availableCards.length > 0) {
+      // take a card
       this.addCardToMainPlayer(-1);
     } else {
       // to do, information
@@ -118,19 +121,17 @@ _p.initNewCardButton = function() {
 _p.initReshuffleButton = function() {
   var button = document.getElementsByClassName("reshuffle")[0];
   button.addEventListener("click", () => {
-    // console.log("przed: ", this._availableCards, this._cardsOnDeck);
     if (this._cardsOnDeck.length > 1) {
       for (i = this._cardsOnDeck.length - 2; i >= 0; i--) {
         this._availableCards.push(this._cardsOnDeck[i]);
         this._cardsOnDeck.splice(i, 1);
       }
-
+      this._deck.renderCardsToTake(this._availableCards.length);
       this._deck.removeAllCardsExceptTop();
     } else {
       // to do, information
       console.log("There is no card to reshuffle!");
     }
-    // console.log("po: ", this._availableCards, this._cardsOnDeck);
   });
 };
 
@@ -155,14 +156,21 @@ _p.initUndoButton = function() {
   });
 };
 
-_p.startGame = function() {};
-
 _p.listenWhenCardThrown = function() {};
 
 _p.addPlayer = function() {};
 
 _p.startGame = function() {
-  // choose cards
+  // init buttons
+  this.initEventListener();
+  this.initNewCardButton();
+  this.initReshuffleButton();
+  this.initUndoButton();
+
+  // first card on deck
+  this.firstInitialCard();
+
+  // get first 5 cards
   for (var i = 0; i < 5; i++) {
     this.addCardToMainPlayer(-1);
   }
@@ -182,4 +190,5 @@ _p.addCardToMainPlayer = function(num) {
   // insert element into cards-wrapper
   node.appendChild(this._mainPlayer.getLastCard().getElement());
   this._mainPlayer.getLastCard().addEvents();
+  this._deck.removeFromCardsToTake();
 };
