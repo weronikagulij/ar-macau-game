@@ -6,12 +6,19 @@ function Deck() {
 _p = Deck.prototype;
 
 _p.renderCard = function(name) {
-  console.log(name);
   this._boxesStack.push(document.createElement("a-box"));
   this._boxesStack[this._boxesStack.length - 1].setAttribute("depth", "0.01");
   this._boxesStack[this._boxesStack.length - 1].setAttribute(
+    "material",
+    "transparent: true;"
+  );
+  // this._boxesStack[this._boxesStack.length - 1].setAttribute(
+  //   "src",
+  //   "assets/img/cards/gray_back.png"
+  // );
+  this._boxesStack[this._boxesStack.length - 1].setAttribute(
     "multisrc",
-    "src4: assets/img/cards/gray_back.png; src5:assets/img/cards/" +
+    "srcs: assets/img/cards/any2.png,assets/img/cards/any2.png,assets/img/cards/any2.png,assets/img/cards/any2.png,assets/img/cards/gray_back.png,assets/img/cards/" +
       name +
       ".png"
   );
@@ -39,13 +46,12 @@ _p.removeAllCardsExceptTop = function() {
   let multisrc = this._boxesStack[this._boxesStack.length - 1].getAttribute(
     "multisrc"
   );
+
   for (i = this._boxesStack.length - 1; i >= 0; i--) {
     this.removeLastCard();
   }
 
-  //   console.log(multisrc[5]);
   this.renderCard(
-    multisrc.srcs[5].replace("assets/img/cards/", "").replace("png", "")
+    multisrc.srcs[5].replace("assets/img/cards/", "").replace(".png", "")
   );
-  console.log(this._boxesStack);
 };
