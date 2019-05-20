@@ -82,7 +82,7 @@ const error = (err) => {
     }
 }
 
-const cardThrown = (card) => {
+const cardThrownAll = (card) => {
     console.log("card was thrown on deck " + card)
 }
 
@@ -102,4 +102,4 @@ sock.on('new-card', newCard)
 sock.on('new-card-all', newCardAll)
 
 sock.on('reshuffle', reshuffleAll)
-sock.on('card-thrown-all', cardThrown)
+sock.on('card-thrown-all', cardThrownAll)
