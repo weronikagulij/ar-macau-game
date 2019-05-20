@@ -1,33 +1,27 @@
 .cards-wrapper {
   position: absolute;
   bottom: -90px;
-  /* left: 50%;
-  transform: translateX(-50%); */
   display: flex;
-  width: 100%;
+  width: calc(100% - 50px);
   justify-content: center;
-}
+  margin-left: 40px; }
 
 .card-element {
   border-radius: 8px 8px 10px 10px;
-  overflow: hidden;
   width: 130px;
   height: 200px;
   transition: 0.1s;
-  margin-left: -20px;
-}
-
-.card-element img {
-  display: block;
-  height: 100%;
-}
+  margin-left: -30px;
+  overflow: hidden; }
+  .card-element img {
+    display: block;
+    height: 100%; }
 
 #arjsDebugUIContainer {
-  display: none;
-}
+  display: none; }
 
 .buttons-wrapper {
   position: absolute;
   top: 40px;
-  left: 40px;
-}
+  left: 40px; }
+
