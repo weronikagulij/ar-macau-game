@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Macao game</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="welcome-panel">
+      <p>Hello in Macau game! Type your name: </p>
+      <form id="name-form">
+        <input id="name-input" type="text" />
+        <button type="submit"> -> </button>
+      </form>
+      <span class="error-msg"></span>
+    </div>
+
+    <div class="chat">
+      <ul id="chat-list"></ul>
+    </div>
+
+    <div class="buttons-wrapper">
+      <div class="new-card"><button>New card</button></div>
+      <div class="reshuffle"><button>Reshuffle</button></div>
+      <div class="undo"><button>Undo</button></div>
+      <div class="end-turn"><button>End turn</button></div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="src/js/utils.js"></script>
+  <script src="src/js/client.js"></script>
+</body>
+
+</html>
