@@ -1,0 +1,32 @@
+.cards-wrapper {
+  position: absolute;
+  bottom: -90px;
+  display: flex;
+  width: calc(100% - 50px);
+  justify-content: center;
+  margin-left: 40px;
+}
+
+.card-element {
+  border-radius: 8px 8px 10px 10px;
+  width: 130px;
+  height: 200px;
+  transition: 0.1s;
+  margin-left: -30px;
+  overflow: hidden;
+}
+
+.card-element img {
+  display: block;
+  height: 100%;
+}
+
+#arjsDebugUIContainer {
+  display: none;
+}
+
+.buttons-wrapper {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+}
