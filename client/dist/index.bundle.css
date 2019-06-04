@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Muli:400,600&display=swap);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,900&display=swap);
 .cards-wrapper {
   position: absolute;
   bottom: -90px;
@@ -20,8 +22,74 @@
 #arjsDebugUIContainer {
   display: none; }
 
-.buttons-wrapper {
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif; }
+
+.container {
   position: absolute;
-  top: 40px;
-  left: 40px; }
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #fff; }
+
+.welcome-background {
+  background: #3bacb6;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+  position: absolute; }
+
+.hidden {
+  display: none; }
+
+.welcome-title {
+  text-align: center; }
+  .welcome-title p {
+    margin: 0px 0 30px;
+    font-size: 38px;
+    margin: 0px 0 25px; }
+
+.welcome-panel {
+  width: 300px;
+  margin: 0 auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%); }
+
+.name-form {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+  flex-direction: column; }
+  .name-form button,
+  .name-form input {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px; }
+  .name-form input {
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    font-weight: 700;
+    color: #6c6c6c;
+    box-shadow: inset 1px 2px 3px 0px #00000036; }
+  .name-form button {
+    margin-top: 10px;
+    border: none;
+    background: #434343;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 1px 3px 5px 0px #00000030;
+    font-weight: bold; }
+  .name-form i {
+    margin-left: 5px; }
+
+input::placeholder {
+  font-weight: 700;
+  color: #adadad; }
 
