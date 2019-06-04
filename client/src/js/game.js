@@ -117,8 +117,6 @@ export default class Game {
   addCardOnDeck(name) {
     this._mainPlayer.deleteCard(name);
     this._mainPlayer.setLastThrownCard(name);
-    // this._cardsOnDeck.push(name);
-    // this._deck.renderCard(name);
     this._sock.emit("throw-card", name);
   }
 
