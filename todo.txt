@@ -1,0 +1,8 @@
+### todo's
+- reshuffle button
+- sending message to a player that has a turn now
+- styling
+
+---- features ----
+- different servers for all group of players?
+- custom domain ? 
