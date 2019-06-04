@@ -71,30 +71,40 @@ export default class Game {
         console.log(card, "you have taken a card " + card.cardCode);
       } ///
     });
+
+    this._sock.on("card-thrown-all", card => {
+      console.log("card was thrown: ", card);
+      // this._deck.removeFromCardsToTake();
+    });
+
+    this._sock.on("new-card-all", () => {
+      this._deck.removeFromCardsToTake();
+    });
+
+    // this._sock.on("render-cards-to-take", number => {
+    //   console.log("rendering new cards");
+    //   this._deck.renderCardsToTake(number);
+    // });
   }
 
   firstInitialCard() {
-    var firstCard = "";
-    var index = -1;
-
-    // select proper first card
-    while (
-      firstCard === "" ||
-      firstCard.includes("2") ||
-      firstCard.includes("3") ||
-      firstCard.includes("J") ||
-      firstCard.includes("A")
-    ) {
-      index = Math.floor(Math.random() * this._availableCards.length);
-      firstCard = this._availableCards[index];
-    }
-
-    this._cardsOnDeck.push(firstCard);
-    this._availableCards.splice(index, 1);
-
-    this._deck.renderCard(firstCard);
-
-    this._deck.renderCardsToTake(this._availableCards.length);
+    // var firstCard = "";
+    // var index = -1;
+    // // select proper first card
+    // while (
+    //   firstCard === "" ||
+    //   firstCard.includes("2") ||
+    //   firstCard.includes("3") ||
+    //   firstCard.includes("J") ||
+    //   firstCard.includes("A")
+    // ) {
+    //   index = Math.floor(Math.random() * this._availableCards.length);
+    //   firstCard = this._availableCards[index];
+    // }
+    // this._cardsOnDeck.push(firstCard);
+    // this._availableCards.splice(index, 1);
+    // this._deck.renderCard(firstCard);
+    // this._deck.renderCardsToTake(this._availableCards.length);
   }
 
   initEventListener() {
@@ -107,60 +117,54 @@ export default class Game {
   addCardOnDeck(name) {
     this._mainPlayer.deleteCard(name);
     this._mainPlayer.setLastThrownCard(name);
-    this._cardsOnDeck.push(name);
-    this._deck.renderCard(name);
+    // this._cardsOnDeck.push(name);
+    // this._deck.renderCard(name);
+    this._sock.emit("throw-card", name);
   }
 
   initNewCardButton() {
     var button = document.getElementsByClassName("new-card")[0];
     button.addEventListener("click", () => {
-      this.emitNewCard();
-      // if (this._availableCards.length > 0) {
-      //   // take a card
-      //   this.addCardToMainPlayer(-1);
-      // } else {
-      //   // to do, information
-      //   console.log("There is no card on the deck!");
-      // }
+      this.emitNewCard(false);
     });
   }
 
   initReshuffleButton() {
-    var button = document.getElementsByClassName("reshuffle")[0];
-    button.addEventListener("click", () => {
-      if (this._cardsOnDeck.length > 1) {
-        for (let i = this._cardsOnDeck.length - 2; i >= 0; i--) {
-          this._availableCards.push(this._cardsOnDeck[i]);
-          this._cardsOnDeck.splice(i, 1);
-        }
-        this._deck.renderCardsToTake(this._availableCards.length);
-        this._deck.removeAllCardsExceptTop();
-      } else {
-        // to do, information
-        console.log("There is no card to reshuffle!");
-      }
-    });
+    // var button = document.getElementsByClassName("reshuffle")[0];
+    // button.addEventListener("click", () => {
+    //   if (this._cardsOnDeck.length > 1) {
+    //     for (let i = this._cardsOnDeck.length - 2; i >= 0; i--) {
+    //       this._availableCards.push(this._cardsOnDeck[i]);
+    //       this._cardsOnDeck.splice(i, 1);
+    //     }
+    //     this._deck.renderCardsToTake(this._availableCards.length);
+    //     this._deck.removeAllCardsExceptTop();
+    //   } else {
+    //     // to do, information
+    //     console.log("There is no card to reshuffle!");
+    //   }
+    // });
   }
 
   initUndoButton() {
-    var button = document.getElementsByClassName("undo")[0];
-    button.addEventListener("click", () => {
-      var lastThrown = this._cardsOnDeck[this._cardsOnDeck.length - 1];
-      // if card on the deck is the same as last thrown by user
-      if (
-        this._mainPlayer.getLastThrownCard() === lastThrown &&
-        this._cardsOnDeck.length > 1
-      ) {
-        // remove last card from the deck and add one to available cards
-        this._availableCards.push(lastThrown);
-        this._cardsOnDeck.splice(this._cardsOnDeck.length - 1, 1);
-        this.addCardToMainPlayer(this._availableCards.length - 1);
-        this._deck.removeLastCard();
-      } else {
-        // to do, information
-        console.log("Could not return last move.");
-      }
-    });
+    // var button = document.getElementsByClassName("undo")[0];
+    // button.addEventListener("click", () => {
+    //   var lastThrown = this._cardsOnDeck[this._cardsOnDeck.length - 1];
+    //   // if card on the deck is the same as last thrown by user
+    //   if (
+    //     this._mainPlayer.getLastThrownCard() === lastThrown &&
+    //     this._cardsOnDeck.length > 1
+    //   ) {
+    //     // remove last card from the deck and add one to available cards
+    //     this._availableCards.push(lastThrown);
+    //     this._cardsOnDeck.splice(this._cardsOnDeck.length - 1, 1);
+    //     this.addCardToMainPlayer(this._availableCards.length - 1);
+    //     this._deck.removeLastCard();
+    //   } else {
+    //     // to do, information
+    //     console.log("Could not return last move.");
+    //   }
+    // });
   }
 
   listenWhenCardThrown() {}
@@ -180,32 +184,24 @@ export default class Game {
 
     // get first 5 cards
     for (var i = 0; i < 5; i++) {
-      this.emitNewCard();
-      // this.addCardToMainPlayer(-1);
+      this.emitNewCard(true);
     }
+
+    this._deck.renderCardsToTake(52); // render all cards
   }
 
   addCardToMainPlayer(name) {
+    // name - card symbol
     console.log(name);
     var node = document.getElementsByClassName("cards-wrapper")[0];
-    // var number;
-    // if (num === -1) {
-    //   // choose random card and remove it from availableCards array
-    //   var number = Math.floor(Math.random() * this._availableCards.length);
-    // } else number = num;
-    // var name = this._availableCards[number]; // card symbol, i. e. "2D", "3D"...
     this._mainPlayer.addCard(name);
-    // this._availableCards.splice(number, 1);
 
     // insert element into cards-wrapper
     node.appendChild(this._mainPlayer.getLastCard().getElement());
     this._mainPlayer.getLastCard().addEvents();
-    this._deck.removeFromCardsToTake();
   }
 
-  emitNewCard() {
-    this._sock.emit("make-turn", { move: "new-card" });
+  emitNewCard(firstTurn) {
+    this._sock.emit("make-turn", { move: "new-card", firstTurn: firstTurn });
   }
 }
-
-// _p = Game.prototype;

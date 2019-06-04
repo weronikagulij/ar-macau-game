@@ -88,9 +88,7 @@ const endTurn = () => {
 };
 
 const error = err => {
-  if (err.msg === "Not your turn!") {
-    console.log(err.msg);
-  }
+  console.log(err.msg);
 };
 
 const cardThrownAll = card => {
