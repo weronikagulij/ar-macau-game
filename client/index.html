@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/index.bundle.css" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+      integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay"
+      crossorigin="anonymous"
+    />
+
+    <script src="dist/libs/aframe.min.js"></script>
+    <script src="dist/libs/aframe-multisrc-component.js"></script>
+    <script src="dist/libs/aframe-ar.js"></script>
+  </head>
+
+  <body style="margin : 0px; overflow: hidden;">
+    <a-scene embedded arjs>
+      <a-marker-camera
+        id="a-marker"
+        preset="custom"
+        type="pattern"
+        url="assets/patterns/mark1.patt"
+      >
+      </a-marker-camera>
+      <a-entity camera id="camera"></a-entity>
+    </a-scene>
+
+    <div class="container">
+      <div class="welcome-background">
+        <div class="welcome-panel">
+          <div class="welcome-title">
+            <p>Hello in Macau game!</p>
+          </div>
+
+          <form id="name-form" class="name-form">
+            <input id="name-input" type="text" placeholder="YOUR NAME" />
+            <button type="submit">GO <i class="fa fa-arrow-right"></i></button>
+          </form>
+          <span class="error-msg"></span>
+        </div>
+      </div>
+
+      <div class="chat">
+        <ul id="chat-list"></ul>
+      </div>
+
+      <div class="buttons-wrapper">
+        <div class="new-card"><button>New card</button></div>
+        <div class="reshuffle"><button>Reshuffle</button></div>
+        <div class="undo"><button>Undo</button></div>
+        <div class="end-turn"><button>End turn</button></div>
+      </div>
+    </div>
+
+    <div class="cards-wrapper"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="dist/index.bundle.js"></script>
+  </body>
+</html>
