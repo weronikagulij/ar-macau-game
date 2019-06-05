@@ -1,4 +1,4 @@
-### todo's
+---- mvp ----
 - reshuffle button
 - sending message to a player that has a turn now
 - styling
