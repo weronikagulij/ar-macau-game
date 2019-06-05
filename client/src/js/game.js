@@ -81,6 +81,11 @@ export default class Game {
       this._deck.removeFromCardsToTake();
     });
 
+    this._sock.on("card-thrown", card => {
+      this._mainPlayer.deleteCard(card.name);
+      this._mainPlayer.setLastThrownCard(card.name);
+    });
+
     // this._sock.on("render-cards-to-take", number => {
     //   console.log("rendering new cards");
     //   this._deck.renderCardsToTake(number);
@@ -115,8 +120,8 @@ export default class Game {
   }
 
   addCardOnDeck(name) {
-    this._mainPlayer.deleteCard(name);
-    this._mainPlayer.setLastThrownCard(name);
+    // this._mainPlayer.deleteCard(name);
+    // this._mainPlayer.setLastThrownCard(name);
     this._sock.emit("throw-card", name);
   }
 
