@@ -4,6 +4,8 @@
 - styling
 - first card
 
+- when user disconnects, get his cards back
+
 ---- features ----
 - different servers for all group of players?
 - custom domain ? 
