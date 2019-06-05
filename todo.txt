@@ -2,6 +2,7 @@
 - reshuffle button
 - sending message to a player that has a turn now
 - styling
+- first card
 
 ---- features ----
 - different servers for all group of players?
