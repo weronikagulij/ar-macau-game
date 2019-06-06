@@ -123,6 +123,10 @@ const reshuffleCards = player => {
 
     cardsOnDeck.splice(0, cardsOnDeck.length - 1);
     console.log(availableCards);
+    io.emit("reshuffle-all", {
+      firstCardCode: cardsOnDeck[cardsOnDeck.length - 1],
+      numberOfAvailableCards: availableCards.length
+    });
   }
 
   sendMsgToAll(`${player.name} reshuffled!`);

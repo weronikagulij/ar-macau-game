@@ -68,13 +68,14 @@ export default class Game {
     this._sock.on("new-card", card => {
       if (card.success === true) {
         this.addCardToMainPlayer(card.cardCode);
-        console.log(card, "you have taken a card " + card.cardCode);
+        // console.log(card, "you have taken a card " + card.cardCode);
       } ///
     });
 
     this._sock.on("card-thrown-all", card => {
-      console.log("card was thrown: ", card);
+      // console.log("card was thrown: ", card);
       // this._deck.removeFromCardsToTake();
+      this._deck.renderCard(card.cardCode);
     });
 
     this._sock.on("new-card-all", () => {
@@ -84,6 +85,12 @@ export default class Game {
     this._sock.on("card-thrown", card => {
       this._mainPlayer.deleteCard(card.name);
       this._mainPlayer.setLastThrownCard(card.name);
+    });
+
+    this._sock.on("reshuffle-all", card => {
+      // console.log(card.firstCardCode);
+      this._deck.renderCardsToTake(card.numberOfAvailableCards);
+      this._deck.removeAllCardsExceptTop();
     });
 
     // this._sock.on("render-cards-to-take", number => {
@@ -195,7 +202,7 @@ export default class Game {
 
   addCardToMainPlayer(name) {
     // name - card symbol
-    console.log(name);
+    // console.log(name);
     var node = document.getElementsByClassName("cards-wrapper")[0];
     this._mainPlayer.addCard(name);
 
