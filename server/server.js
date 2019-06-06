@@ -91,8 +91,8 @@ const registerUser = (id, name) => {
 
 const sendNewCardToPlayer = player => {
   if (availableCards.length === 0) {
-    io.to(player.sockid).emit("new-card", {
-      cardCode: availableCards[i],
+    io.to(player.sockid).emit("error-msg", {
+      msg: "No more cards to take!",
       success: false
     });
     return;
@@ -114,7 +114,17 @@ const sendNewCardToPlayer = player => {
 };
 
 const reshuffleCards = player => {
-  // to do: reshuffle
+  console.log(availableCards);
+  // put all cards into availableCards except first one
+  if (cardsOnDeck.length > 0) {
+    for (let i = 0; i < cardsOnDeck.length - 1; i++) {
+      availableCards.push(cardsOnDeck[i]);
+    }
+
+    cardsOnDeck.splice(0, cardsOnDeck.length - 1);
+    console.log(availableCards);
+  }
+
   sendMsgToAll(`${player.name} reshuffled!`);
 };
 
@@ -168,14 +178,18 @@ io.on("connection", sock => {
     if (typeof player === "undefined" || player === null) {
       console.log("Error: there is no player as registered");
     } else if (player.activeTurn === true) {
-      // turn can only be played fore on user at the time
       if (turnData.move === "new-card") {
+        // new card turn
         sendNewCardToPlayer(player);
       } else if (turnData.move === "reshuffle") {
+        // reshuffle turn
         reshuffleCards(player);
       } else {
         console.log("Error: there is no code for this move");
       }
+    } else if (turnData.firstTurn === true && turnData.move === "new-card") {
+      // if player has no active turn, but ask for the cards at the beginning
+      sendNewCardToPlayer(player);
     } else {
       sock.emit("error-msg", { msg: "Not your turn!", success: false });
     }
@@ -208,13 +222,19 @@ io.on("connection", sock => {
   });
 
   sock.on("throw-card", card => {
-    console.log("rzucona");
+    console.log("rzucona ", card);
     player = findPlayerById(sock.id);
 
     if (typeof player !== "undefined" && player !== null) {
-      if (!cardsOnDeck.includes(card) && !availableCards.includes(card)) {
+      if (player.activeTurn === false) {
+        sock.emit("error-msg", { msg: "Not your turn!", success: false });
+      } else if (
+        !cardsOnDeck.includes(card) &&
+        !availableCards.includes(card)
+      ) {
         cardsOnDeck.push(card);
-        io.emit("card-thrown-all");
+        sock.emit("card-thrown", { name: card, success: true });
+        io.emit("card-thrown-all", { cardCode: card });
         sendMsgToAll(`${player.name} played ${card}`);
       }
     }
@@ -228,20 +248,3 @@ server.on("error", err => {
 server.listen(8080, () => {
   console.log("server started on http://localhost:8080");
 });
-
-// const express = require("express");
-// const app = express();
-// const path = require("path");
-
-// app.set("/", "html");
-// app.use(express.static(path.join(__dirname, "/")));
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: false }));
-
-// app.get("/", (req, res) => {
-//   res.render("index");
-// });
-
-// app.listen(3333, "0.0.0.0", () => {
-//   console.log("listening on http://localhost:3333");
-// });
