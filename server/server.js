@@ -87,6 +87,16 @@ const registerUser = (id, name) => {
   io.to(user.sockid).emit("registerRes", "You are registered " + user.name);
 
   sendMsgToAll(`${name} was registered!`);
+
+  // choose first card and send information
+  let firstCard;
+  if (cardsOnDeck.length === 0) {
+    const i = (number = Math.floor(Math.random() * availableCards.length));
+    availableCards.splice(number, 1);
+    cardsOnDeck.push(availableCards[i]);
+  }
+
+  io.to(user.sockid).emit("initial-cards", { cards: cardsOnDeck });
 };
 
 const sendNewCardToPlayer = player => {
@@ -112,6 +122,10 @@ const sendNewCardToPlayer = player => {
   io.emit("new-card-all", null);
   sendMsgToAll(`${player.name} took a new card!`);
 };
+
+// const i = (number = Math.floor(Math.random() * availableCards.length));
+// availableCards[i]
+// availableCards.splice(number, 1);
 
 const reshuffleCards = player => {
   console.log(availableCards);
@@ -226,7 +240,6 @@ io.on("connection", sock => {
   });
 
   sock.on("throw-card", card => {
-    console.log("rzucona ", card);
     player = findPlayerById(sock.id);
 
     if (typeof player !== "undefined" && player !== null) {
@@ -236,6 +249,7 @@ io.on("connection", sock => {
         !cardsOnDeck.includes(card) &&
         !availableCards.includes(card)
       ) {
+        console.log("rzucona ", card);
         cardsOnDeck.push(card);
         sock.emit("card-thrown", { name: card, success: true });
         io.emit("card-thrown-all", { cardCode: card });

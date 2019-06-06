@@ -93,6 +93,13 @@ export default class Game {
       this._deck.removeAllCardsExceptTop();
     });
 
+    this._sock.on("initial-cards", cards => {
+      for (let i = 0; i < cards.cards.length; i++) {
+        this._deck.renderCard(cards.cards[i]);
+      }
+      console.log(cards);
+    });
+
     // this._sock.on("render-cards-to-take", number => {
     //   console.log("rendering new cards");
     //   this._deck.renderCardsToTake(number);
