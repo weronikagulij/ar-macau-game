@@ -74,6 +74,27 @@ body {
   transform: translateY(-50%);
 }
 
+.buttons-wrapper {
+  margin-left: 20px;
+
+  button {
+    border: none;
+    background: #e0e0e0;
+    color: #4b4b4b;
+    padding: 13px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    width: 140px;
+    cursor: pointer;
+  }
+
+  .end-turn button {
+    background: #3bacb6;
+    color: #ffffffe6;
+  }
+}
+
 .name-form {
   display: flex;
   justify-content: center;
@@ -115,4 +136,50 @@ body {
 input::placeholder {
   font-weight: 700;
   color: rgb(173, 173, 173);
+}
+
+.ui {
+  display: flex;
+  justify-content: space-between;
+  height: calc(100vh - 20px);
+  margin-top: 20px;
+}
+
+.chat-list {
+  width: 230px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: calc(100vh - 190px);
+  background: #e0e0e0;
+  color: #737373;
+  overflow-y: scroll;
+  padding: 10px 0;
+  font-size: 14px;
+  border-radius: 5px;
+
+  li {
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+
+    .date {
+      font-size: 12px;
+      color: #959595;
+    }
+
+    .name {
+      color: #3bacb6;
+      font-weight: bold;
+    }
+  }
+
+  li:nth-of-type(even) {
+    background: #efefef;
+    color: #7e7e7e;
+
+    .date {
+      color: #a3a3a3;
+    }
+  }
 }

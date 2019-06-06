@@ -73,8 +73,11 @@ const findPlayerById = id => {
   return players.find(x => x.sockid === id);
 };
 
-const sendMsgToAll = msg => {
-  io.emit("message", { text: msg, date: new Date() });
+const sendMsgToAll = (name, msg) => {
+  io.emit("message", {
+    text: `<span class="name">${name}</span> ${msg}`,
+    date: new Date()
+  });
 };
 
 const registerUser = (id, name) => {
@@ -86,7 +89,7 @@ const registerUser = (id, name) => {
   console.log("registered: " + user.sockid);
   io.to(user.sockid).emit("registerRes", "You are registered " + user.name);
 
-  sendMsgToAll(`${name} was registered!`);
+  sendMsgToAll(name, "was registered!");
 
   // choose first card and send information
   let firstCard;
@@ -120,7 +123,7 @@ const sendNewCardToPlayer = player => {
 
   // send message to everyone so they can change view
   io.emit("new-card-all", null);
-  sendMsgToAll(`${player.name} took a new card!`);
+  sendMsgToAll(player.name, "took a new card!");
 };
 
 // const i = (number = Math.floor(Math.random() * availableCards.length));
@@ -143,7 +146,7 @@ const reshuffleCards = player => {
     });
   }
 
-  sendMsgToAll(`${player.name} reshuffled!`);
+  sendMsgToAll(player.name, "reshuffled!");
 };
 
 const setNextActivePlayer = player => {
@@ -230,7 +233,7 @@ io.on("connection", sock => {
     player = findPlayerById(sock.id);
 
     if (typeof player !== "undefined" && player !== null) {
-      sendMsgToAll(player.name + " disconnected!");
+      sendMsgToAll(player.name, " disconnected!");
       if (player.activeTurn === true) setNextActivePlayerMonitor(player);
 
       // remove player from array
@@ -253,7 +256,7 @@ io.on("connection", sock => {
         cardsOnDeck.push(card);
         sock.emit("card-thrown", { name: card, success: true });
         io.emit("card-thrown-all", { cardCode: card });
-        sendMsgToAll(`${player.name} played ${card}`);
+        sendMsgToAll(player.name, "played ${card}");
       }
     }
   });
