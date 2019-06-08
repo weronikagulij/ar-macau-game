@@ -3,7 +3,7 @@ import Deck from "./deck";
 import { ButtonsEvents } from "./buttons-events";
 
 export default class Game {
-  constructor(sock, yourTurnEl, classes) {
+  constructor(sock, classes) {
     this._availableCards = [
       "2C",
       "3C",
@@ -64,7 +64,7 @@ export default class Game {
     this._mainPlayer = new Player([]);
     this._deck = new Deck();
     this._sock = sock;
-    this._buttonsEvents = new ButtonsEvents(this._sock, yourTurnEl, classes);
+    this._buttonsEvents = new ButtonsEvents(this._sock, classes);
     console.log("tutajAAA ", classes);
   }
 
