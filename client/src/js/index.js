@@ -5,13 +5,23 @@ import MessageManager from "./message-manager.js";
 
 const classes = {
   errorMsgVisible: "visible",
-  welcomePanelHidden: "hidden"
+  welcomePanelHidden: "hidden",
+  yourTurn: "your-turn"
 };
 
+const classesToSend = {
+  visible: "visible",
+  notYourTurnElement: "error-message",
+  yourTurnElement: "your-turn"
+};
+
+let yourTurnEl = document.getElementsByClassName("your-turn")[0];
+console.log("TUUUUUU", yourTurnEl);
+
 const sock = io();
-let game = new Game(sock);
-let messageManager = new MessageManager(sock);
-console.log(messageManager);
+let game = new Game(sock, yourTurnEl, classesToSend);
+let messageManager = new MessageManager(sock, yourTurnEl, classesToSend);
+console.log(messageManager, yourTurnEl, classesToSend);
 
 // const formatDate = date => {
 //   return `${date.slice(11, 16)}`;
