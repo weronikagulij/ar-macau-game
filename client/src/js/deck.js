@@ -14,9 +14,7 @@ export default class Deck {
     );
     this._boxesStack[this._boxesStack.length - 1].setAttribute(
       "src",
-      "assets/img/cards/" +
-      name +
-      ".png"
+      "assets/img/cards/" + name + ".png"
     );
     this._boxesStack[this._boxesStack.length - 1].setAttribute(
       "position",
@@ -59,10 +57,7 @@ export default class Deck {
       let newCard = document.createElement("a-box");
       newCard.setAttribute("depth", "0.01");
       newCard.setAttribute("material", "transparent: true;");
-      newCard.setAttribute(
-        "src",
-        "assets/img/cards/gray_back.png"
-      );
+      newCard.setAttribute("src", "assets/img/cards/gray_back.png");
       newCard.setAttribute("position", "2.2 " + 0.03 * i + " 0");
       newCard.setAttribute("height", "2");
       newCard.setAttribute("width", "1.3");
@@ -75,6 +70,7 @@ export default class Deck {
     }
   }
 
+  // remove last thrown card
   removeLastCard() {
     let el = this._boxesStack.pop();
     el.parentNode.removeChild(el);
@@ -86,16 +82,12 @@ export default class Deck {
   }
 
   removeAllCardsExceptTop() {
-    let src = this._boxesStack[this._boxesStack.length - 1].getAttribute(
-      "src"
-    );
+    let src = this._boxesStack[this._boxesStack.length - 1].getAttribute("src");
 
     for (let i = this._boxesStack.length - 1; i >= 0; i--) {
       this.removeLastCard();
     }
 
-    this.renderCard(
-      src.replace("assets/img/cards/", "").replace(".png", "")
-    );
+    this.renderCard(src.replace("assets/img/cards/", "").replace(".png", ""));
   }
 }

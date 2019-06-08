@@ -33,5 +33,3 @@ export default class Player {
     return this._lastThrownCard;
   }
 }
-
-// _p = Player.prototype;
