@@ -20,6 +20,44 @@ body {
 .hidden {
   display: none; }
 
+.messages-wrapper {
+  width: calc(100% - 380px);
+  box-sizing: border-box;
+  position: absolute;
+  left: 180px;
+  margin: 20px 0; }
+  .messages-wrapper > div {
+    background: #0000008a;
+    padding: 6px 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    color: #eaeaea; }
+  .messages-wrapper .your-turn {
+    background: #1cd36891;
+    color: #2a784a;
+    display: none; }
+
+.your-turn.visible {
+  display: block; }
+
+.error-message {
+  background: #0000005c; }
+  .error-message:empty {
+    display: none; }
+  .error-message.visible {
+    animation-duration: 1.6s;
+    animation-name: message-animation;
+    animation-fill-mode: forwards; }
+
+@keyframes message-animation {
+  0% {
+    opacity: 1; }
+  60% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+
 .cards-wrapper {
   position: absolute;
   bottom: -120px;
@@ -58,11 +96,12 @@ body {
 .ui {
   display: flex;
   justify-content: space-between;
-  height: calc(100vh - 20px);
+  height: 100%;
+  box-sizing: border-box;
   margin-top: 20px; }
 
 .chat-list {
-  width: 185px;
+  width: 180px;
   list-style-type: none;
   padding: 0;
   margin: 0;

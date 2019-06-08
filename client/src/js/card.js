@@ -13,7 +13,6 @@ export default class Card {
     this._element.classList.add(this._name, "card-element");
     this._element.style.overflow = "hidden";
     this._element.style.transform = "translate(0px, 0px)";
-    // overflow: hidden; transform: translate(0px, 0px);
   }
 
   addEvents() {

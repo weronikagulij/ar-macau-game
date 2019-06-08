@@ -25,7 +25,11 @@ export default class MessageManager {
     el.innerHTML = err.msg;
 
     el.classList.remove(this._classes.visible);
-    el.classList.add(this._classes.visible);
+    // el.classList.add(this._classes.visible);
+
+    setTimeout(() => {
+      el.classList.add(this._classes.visible);
+    }, 10);
   }
 
   receiveMsgToAll(msg) {

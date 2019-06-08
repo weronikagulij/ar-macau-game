@@ -22,12 +22,13 @@
 .ui {
   display: flex;
   justify-content: space-between;
-  height: calc(100vh - 20px);
+  height: 100%;
+  box-sizing: border-box;
   margin-top: 20px;
 }
 
 .chat-list {
-  width: 185px;
+  width: 180px;
   list-style-type: none;
   padding: 0;
   margin: 0;

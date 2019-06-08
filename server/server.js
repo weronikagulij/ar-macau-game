@@ -129,12 +129,7 @@ const sendNewCardToPlayer = player => {
   sendMsgToAll(player.name, "took a new card!");
 };
 
-// const i = (number = Math.floor(Math.random() * availableCards.length));
-// availableCards[i]
-// availableCards.splice(number, 1);
-
 const reshuffleCards = player => {
-  console.log(availableCards);
   // put all cards into availableCards except first one
   if (cardsOnDeck.length > 0) {
     for (let i = 0; i < cardsOnDeck.length - 1; i++) {
@@ -142,7 +137,6 @@ const reshuffleCards = player => {
     }
 
     cardsOnDeck.splice(0, cardsOnDeck.length - 1);
-    console.log(availableCards);
     io.emit("reshuffle-all", {
       firstCardCode: cardsOnDeck[cardsOnDeck.length - 1],
       numberOfAvailableCards: availableCards.length
@@ -164,22 +158,13 @@ const setNextActivePlayer = player => {
 
   if (activeIndex === -1 && players.length !== 0) {
     players[0].activeTurn = true;
-    console.log("tura gracza 1" + players[0].activeTurn);
     io.to(players[0].sockid).emit("your-turn");
   } else if (activeIndex === players.length - 1) {
     players[0].activeTurn = true;
     io.to(players[0].sockid).emit("your-turn");
-    console.log(" tura gracza nr 1" + players[0].activeTurn);
   } else {
     players[activeIndex + 1].activeTurn = true;
     io.to(players[activeIndex + 1].sockid).emit("your-turn");
-    console.log(
-      "tura gracza " +
-        (activeIndex + 1) +
-        players[0].activeTurn +
-        " | " +
-        +players[1].activeTurn
-    );
   }
 };
 
@@ -193,7 +178,7 @@ const setNextActivePlayerMonitor = player => {
 
 io.on("connection", sock => {
   let player;
-  console.log("someone connected", sock.id);
+  console.log("someone connected");
 
   sock.on("name", name => {
     player = findPlayerById(sock.id);
@@ -203,7 +188,6 @@ io.on("connection", sock => {
   sock.on("make-turn", turnData => {
     player = findPlayerById(sock.id);
     if (typeof player === "undefined" || player === null) {
-      console.log("Error: there is no player as registered");
     } else if (player.activeTurn === true) {
       if (turnData.move === "new-card") {
         // new card turn
