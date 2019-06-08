@@ -83,7 +83,10 @@ const sendMsgToAll = (name, msg) => {
 const registerUser = (id, name) => {
   const user = new User(id, name);
 
-  if (players.length === 0) user.activeTurn = true;
+  if (players.length === 0) {
+    user.activeTurn = true;
+    io.to(user.sockid).emit("your-turn");
+  }
 
   players.push(user);
   console.log("registered: " + user.sockid);
@@ -162,11 +165,14 @@ const setNextActivePlayer = player => {
   if (activeIndex === -1 && players.length !== 0) {
     players[0].activeTurn = true;
     console.log("tura gracza 1" + players[0].activeTurn);
+    io.to(players[0].sockid).emit("your-turn");
   } else if (activeIndex === players.length - 1) {
     players[0].activeTurn = true;
+    io.to(players[0].sockid).emit("your-turn");
     console.log(" tura gracza nr 1" + players[0].activeTurn);
   } else {
     players[activeIndex + 1].activeTurn = true;
+    io.to(players[activeIndex + 1].sockid).emit("your-turn");
     console.log(
       "tura gracza " +
         (activeIndex + 1) +

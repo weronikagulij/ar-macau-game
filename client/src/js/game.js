@@ -1,5 +1,6 @@
 import Player from "./player";
 import Deck from "./deck";
+import { ButtonsEvents } from "./buttons-events";
 
 export default class Game {
   constructor(sock) {
@@ -57,24 +58,39 @@ export default class Game {
       "KS",
       "QS"
     ];
+
     this._cardsOnDeck = [];
     this._players = [];
     this._mainPlayer = new Player([]);
     this._deck = new Deck();
     this._sock = sock;
+    this._buttonsEvents = new ButtonsEvents(this._sock);
+    console.log("sock0 ", sock);
+  }
+
+  startGame() {
+    // init buttons
+    this.initEventListener();
+    this.initNewCardButton();
+    this.initSockEvents();
+    this._buttonsEvents.initEvents();
+
+    // get first 5 cards
+    for (var i = 0; i < 5; i++) {
+      this.emitNewCard(true);
+    }
+
+    this._deck.renderCardsToTake(52); // render all cards
   }
 
   initSockEvents() {
     this._sock.on("new-card", card => {
       if (card.success === true) {
         this.addCardToMainPlayer(card.cardCode);
-        // console.log(card, "you have taken a card " + card.cardCode);
-      } ///
+      }
     });
 
     this._sock.on("card-thrown-all", card => {
-      // console.log("card was thrown: ", card);
-      // this._deck.removeFromCardsToTake();
       this._deck.renderCard(card.cardCode);
     });
 
@@ -88,7 +104,6 @@ export default class Game {
     });
 
     this._sock.on("reshuffle-all", card => {
-      // console.log(card.firstCardCode);
       this._deck.renderCardsToTake(card.numberOfAvailableCards);
       this._deck.removeAllCardsExceptTop();
     });
@@ -97,33 +112,7 @@ export default class Game {
       for (let i = 0; i < cards.cards.length; i++) {
         this._deck.renderCard(cards.cards[i]);
       }
-      console.log(cards);
     });
-
-    // this._sock.on("render-cards-to-take", number => {
-    //   console.log("rendering new cards");
-    //   this._deck.renderCardsToTake(number);
-    // });
-  }
-
-  firstInitialCard() {
-    // var firstCard = "";
-    // var index = -1;
-    // // select proper first card
-    // while (
-    //   firstCard === "" ||
-    //   firstCard.includes("2") ||
-    //   firstCard.includes("3") ||
-    //   firstCard.includes("J") ||
-    //   firstCard.includes("A")
-    // ) {
-    //   index = Math.floor(Math.random() * this._availableCards.length);
-    //   firstCard = this._availableCards[index];
-    // }
-    // this._cardsOnDeck.push(firstCard);
-    // this._availableCards.splice(index, 1);
-    // this._deck.renderCard(firstCard);
-    // this._deck.renderCardsToTake(this._availableCards.length);
   }
 
   initEventListener() {
@@ -134,8 +123,6 @@ export default class Game {
   }
 
   addCardOnDeck(name) {
-    // this._mainPlayer.deleteCard(name);
-    // this._mainPlayer.setLastThrownCard(name);
     this._sock.emit("throw-card", name);
   }
 
@@ -146,70 +133,8 @@ export default class Game {
     });
   }
 
-  initReshuffleButton() {
-    // var button = document.getElementsByClassName("reshuffle")[0];
-    // button.addEventListener("click", () => {
-    //   if (this._cardsOnDeck.length > 1) {
-    //     for (let i = this._cardsOnDeck.length - 2; i >= 0; i--) {
-    //       this._availableCards.push(this._cardsOnDeck[i]);
-    //       this._cardsOnDeck.splice(i, 1);
-    //     }
-    //     this._deck.renderCardsToTake(this._availableCards.length);
-    //     this._deck.removeAllCardsExceptTop();
-    //   } else {
-    //     // to do, information
-    //     console.log("There is no card to reshuffle!");
-    //   }
-    // });
-  }
-
-  initUndoButton() {
-    // var button = document.getElementsByClassName("undo")[0];
-    // button.addEventListener("click", () => {
-    //   var lastThrown = this._cardsOnDeck[this._cardsOnDeck.length - 1];
-    //   // if card on the deck is the same as last thrown by user
-    //   if (
-    //     this._mainPlayer.getLastThrownCard() === lastThrown &&
-    //     this._cardsOnDeck.length > 1
-    //   ) {
-    //     // remove last card from the deck and add one to available cards
-    //     this._availableCards.push(lastThrown);
-    //     this._cardsOnDeck.splice(this._cardsOnDeck.length - 1, 1);
-    //     this.addCardToMainPlayer(this._availableCards.length - 1);
-    //     this._deck.removeLastCard();
-    //   } else {
-    //     // to do, information
-    //     console.log("Could not return last move.");
-    //   }
-    // });
-  }
-
-  listenWhenCardThrown() {}
-
-  addPlayer() {}
-
-  startGame() {
-    // init buttons
-    this.initEventListener();
-    this.initNewCardButton();
-    this.initReshuffleButton();
-    this.initUndoButton();
-    this.initSockEvents();
-
-    // first card on deck
-    this.firstInitialCard();
-
-    // get first 5 cards
-    for (var i = 0; i < 5; i++) {
-      this.emitNewCard(true);
-    }
-
-    this._deck.renderCardsToTake(52); // render all cards
-  }
-
   addCardToMainPlayer(name) {
     // name - card symbol
-    // console.log(name);
     var node = document.getElementsByClassName("cards-wrapper")[0];
     this._mainPlayer.addCard(name);
 
