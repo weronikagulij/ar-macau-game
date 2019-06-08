@@ -256,7 +256,7 @@ io.on("connection", sock => {
         cardsOnDeck.push(card);
         sock.emit("card-thrown", { name: card, success: true });
         io.emit("card-thrown-all", { cardCode: card });
-        sendMsgToAll(player.name, "played ${card}");
+        sendMsgToAll(player.name, `played ${card}`);
       }
     }
   });

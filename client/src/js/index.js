@@ -49,6 +49,7 @@ const receiveMsgToAll = msg => {
   console.log("tutaj");
   const parent = document.getElementById("chat-list");
   const child = document.createElement("li");
+  // child.classList.add("no-highlight");
   child.innerHTML = `<span class="date">
             ${formatDate(msg.date)}
         </span>
@@ -57,6 +58,7 @@ const receiveMsgToAll = msg => {
         </span>`;
 
   parent.appendChild(child);
+  parent.scrollTop = parent.scrollHeight;
 };
 
 // new card events

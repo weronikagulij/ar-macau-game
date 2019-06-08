@@ -2,7 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,900&display=swap);
 .cards-wrapper {
   position: absolute;
-  bottom: -90px;
+  bottom: -120px;
   display: flex;
   width: calc(100% - 50px);
   justify-content: center;
@@ -116,7 +116,7 @@ input::placeholder {
   margin-top: 20px; }
 
 .chat-list {
-  width: 230px;
+  width: 185px;
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -124,13 +124,18 @@ input::placeholder {
   background: #e0e0e0;
   color: #737373;
   overflow-y: scroll;
-  padding: 10px 0;
+  padding: 0;
   font-size: 14px;
   border-radius: 5px; }
   .chat-list li {
+    --color: none;
     padding: 8px 10px;
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    background: #fff;
+    animation-duration: 1s;
+    animation-name: background-odd;
+    animation-fill-mode: forwards; }
     .chat-list li .date {
       font-size: 12px;
       color: #959595; }
@@ -138,8 +143,14 @@ input::placeholder {
       color: #3bacb6;
       font-weight: bold; }
   .chat-list li:nth-of-type(even) {
-    background: #efefef;
+    --color: #efefef;
     color: #7e7e7e; }
     .chat-list li:nth-of-type(even) .date {
       color: #a3a3a3; }
+
+@keyframes background-odd {
+  0% {
+    background: #fff; }
+  100% {
+    background: var(--color); } }
 

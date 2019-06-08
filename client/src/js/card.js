@@ -94,11 +94,15 @@ const dragElement = (elmnt, name) => {
 
   function closeDragElement(e) {
     let clientY =
-      e.clientY === "undefined" ? e.changedTouches[0].clientY : e.clientY;
+      typeof e.clientY === "undefined"
+        ? e.changedTouches[0].clientY
+        : e.clientY;
 
     // stop moving when mouse button is released:
     let diffY = clientY - (window.innerHeight * 2 - height) / 2;
 
+    console.log((elmnt.offsetHeight * 3) / 4, Math.abs(diffY));
+    console.log(clientY, window.innerHeight, window.innerWidth);
     if ((elmnt.offsetHeight * 3) / 4 < Math.abs(diffY)) {
       // when card is dropped, fire event
       let event = new CustomEvent("carddropped", { detail: { name: name } });
