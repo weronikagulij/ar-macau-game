@@ -1,4 +1,4 @@
-# Play card games in augmented reality!
+# Play card games in Augmented Reality!
 
 An application that allows multiple players to play in Macau game in argumented reality, no paper cards are needed. Players give their names that will be visible on the chat that is common for everyone. A player can choose to take few of the following actions - take a card, throw a card, reshuffle. At the end the player can click "end turn" button to allow next of the players to start a turn.
 
