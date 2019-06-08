@@ -1,0 +1,86 @@
+.buttons-wrapper {
+  margin-left: 20px;
+
+  button {
+    border: none;
+    background: #e0e0e0;
+    color: #4b4b4b;
+    padding: 13px 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    width: 140px;
+    cursor: pointer;
+  }
+
+  .end-turn button {
+    background: $color-primary;
+    color: #ffffffe6;
+  }
+}
+
+.ui {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  box-sizing: border-box;
+  margin-top: 20px;
+}
+
+.chat-list {
+  width: 180px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: calc(100vh - 190px);
+  background: #e0e0e0;
+  color: #737373;
+  overflow-y: scroll;
+  padding: 0;
+  font-size: 14px;
+  border-radius: 5px;
+
+  li {
+    --color: none;
+
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    word-break: break-all;
+
+    animation-duration: 1s;
+    animation-name: background-odd;
+    animation-fill-mode: forwards;
+
+    .date {
+      font-size: 12px;
+      color: #959595;
+    }
+
+    .name {
+      color: $color-primary;
+      font-weight: bold;
+    }
+  }
+
+  li:nth-of-type(even) {
+    --color: #efefef;
+
+    color: #7e7e7e;
+
+    .date {
+      color: #a3a3a3;
+    }
+  }
+}
+
+@keyframes background-odd {
+  0% {
+    background: #fff;
+  }
+
+  100% {
+    background: var(--color);
+  }
+}

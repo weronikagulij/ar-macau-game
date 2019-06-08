@@ -1,8 +1,9 @@
 import Player from "./player";
 import Deck from "./deck";
+import { ButtonsEvents } from "./buttons-events";
 
 export default class Game {
-  constructor(sock) {
+  constructor(sock, classes) {
     this._availableCards = [
       "2C",
       "3C",
@@ -57,44 +58,60 @@ export default class Game {
       "KS",
       "QS"
     ];
+
     this._cardsOnDeck = [];
     this._players = [];
     this._mainPlayer = new Player([]);
     this._deck = new Deck();
     this._sock = sock;
+    this._buttonsEvents = new ButtonsEvents(this._sock, classes);
+  }
+
+  startGame() {
+    // init buttons
+    this.initEventListener();
+    this.initNewCardButton();
+    this.initSockEvents();
+    this._buttonsEvents.initEvents();
+
+    // get first 5 cards
+    for (var i = 0; i < 5; i++) {
+      this.emitNewCard(true);
+    }
+
+    this._deck.renderCardsToTake(52); // render all cards
   }
 
   initSockEvents() {
     this._sock.on("new-card", card => {
       if (card.success === true) {
         this.addCardToMainPlayer(card.cardCode);
-        console.log(card, "you have taken a card " + card.cardCode);
-      } ///
+      }
     });
-  }
 
-  firstInitialCard() {
-    var firstCard = "";
-    var index = -1;
+    this._sock.on("card-thrown-all", card => {
+      this._deck.renderCard(card.cardCode);
+    });
 
-    // select proper first card
-    while (
-      firstCard === "" ||
-      firstCard.includes("2") ||
-      firstCard.includes("3") ||
-      firstCard.includes("J") ||
-      firstCard.includes("A")
-    ) {
-      index = Math.floor(Math.random() * this._availableCards.length);
-      firstCard = this._availableCards[index];
-    }
+    this._sock.on("new-card-all", () => {
+      this._deck.removeFromCardsToTake();
+    });
 
-    this._cardsOnDeck.push(firstCard);
-    this._availableCards.splice(index, 1);
+    this._sock.on("card-thrown", card => {
+      this._mainPlayer.deleteCard(card.name);
+      this._mainPlayer.setLastThrownCard(card.name);
+    });
 
-    this._deck.renderCard(firstCard);
+    this._sock.on("reshuffle-all", card => {
+      this._deck.renderCardsToTake(card.numberOfAvailableCards);
+      this._deck.removeAllCardsExceptTop();
+    });
 
-    this._deck.renderCardsToTake(this._availableCards.length);
+    this._sock.on("initial-cards", cards => {
+      for (let i = 0; i < cards.cards.length; i++) {
+        this._deck.renderCard(cards.cards[i]);
+      }
+    });
   }
 
   initEventListener() {
@@ -105,107 +122,27 @@ export default class Game {
   }
 
   addCardOnDeck(name) {
-    this._mainPlayer.deleteCard(name);
-    this._mainPlayer.setLastThrownCard(name);
-    this._cardsOnDeck.push(name);
-    this._deck.renderCard(name);
+    this._sock.emit("throw-card", name);
   }
 
   initNewCardButton() {
     var button = document.getElementsByClassName("new-card")[0];
     button.addEventListener("click", () => {
-      this.emitNewCard();
-      // if (this._availableCards.length > 0) {
-      //   // take a card
-      //   this.addCardToMainPlayer(-1);
-      // } else {
-      //   // to do, information
-      //   console.log("There is no card on the deck!");
-      // }
+      this.emitNewCard(false);
     });
-  }
-
-  initReshuffleButton() {
-    var button = document.getElementsByClassName("reshuffle")[0];
-    button.addEventListener("click", () => {
-      if (this._cardsOnDeck.length > 1) {
-        for (let i = this._cardsOnDeck.length - 2; i >= 0; i--) {
-          this._availableCards.push(this._cardsOnDeck[i]);
-          this._cardsOnDeck.splice(i, 1);
-        }
-        this._deck.renderCardsToTake(this._availableCards.length);
-        this._deck.removeAllCardsExceptTop();
-      } else {
-        // to do, information
-        console.log("There is no card to reshuffle!");
-      }
-    });
-  }
-
-  initUndoButton() {
-    var button = document.getElementsByClassName("undo")[0];
-    button.addEventListener("click", () => {
-      var lastThrown = this._cardsOnDeck[this._cardsOnDeck.length - 1];
-      // if card on the deck is the same as last thrown by user
-      if (
-        this._mainPlayer.getLastThrownCard() === lastThrown &&
-        this._cardsOnDeck.length > 1
-      ) {
-        // remove last card from the deck and add one to available cards
-        this._availableCards.push(lastThrown);
-        this._cardsOnDeck.splice(this._cardsOnDeck.length - 1, 1);
-        this.addCardToMainPlayer(this._availableCards.length - 1);
-        this._deck.removeLastCard();
-      } else {
-        // to do, information
-        console.log("Could not return last move.");
-      }
-    });
-  }
-
-  listenWhenCardThrown() {}
-
-  addPlayer() {}
-
-  startGame() {
-    // init buttons
-    this.initEventListener();
-    this.initNewCardButton();
-    this.initReshuffleButton();
-    this.initUndoButton();
-    this.initSockEvents();
-
-    // first card on deck
-    this.firstInitialCard();
-
-    // get first 5 cards
-    for (var i = 0; i < 5; i++) {
-      this.emitNewCard();
-      // this.addCardToMainPlayer(-1);
-    }
   }
 
   addCardToMainPlayer(name) {
-    console.log(name);
+    // name - card symbol
     var node = document.getElementsByClassName("cards-wrapper")[0];
-    // var number;
-    // if (num === -1) {
-    //   // choose random card and remove it from availableCards array
-    //   var number = Math.floor(Math.random() * this._availableCards.length);
-    // } else number = num;
-    // var name = this._availableCards[number]; // card symbol, i. e. "2D", "3D"...
     this._mainPlayer.addCard(name);
-    // this._availableCards.splice(number, 1);
 
     // insert element into cards-wrapper
     node.appendChild(this._mainPlayer.getLastCard().getElement());
     this._mainPlayer.getLastCard().addEvents();
-    this._deck.removeFromCardsToTake();
   }
 
-  emitNewCard() {
-    this._sock.emit("make-turn", { move: "new-card" });
+  emitNewCard(firstTurn) {
+    this._sock.emit("make-turn", { move: "new-card", firstTurn: firstTurn });
   }
 }
-
-// _p = Game.prototype;

@@ -1,24 +1,31 @@
 import Game from "./game.js";
+<<<<<<< HEAD
+import MessageManager from "./message-manager.js";
+=======
 
 <<<<<<< Updated upstream
 <<<<<<< HEAD
 // import { formatDate } from "./utility";
+>>>>>>> master
 
 const classes = {
   errorMsgVisible: "visible",
-  welcomePanelHidden: "hidden"
+  welcomePanelHidden: "hidden",
+  yourTurn: "your-turn"
 };
 
+const classesToSend = {
+  visible: "visible",
+  notYourTurnElement: "error-message",
+  yourTurnElement: "your-turn"
+};
+
+<<<<<<< HEAD
 const sock = io();
-let game = new Game(sock);
+let game = new Game(sock, classesToSend);
+let messageManager = new MessageManager(sock, classesToSend);
 
-const formatDate = date => {
-  return `${date.slice(0, 10)} ${date.slice(11, 16)}`;
-};
 =======
-
-import formatDate from "./utility"
-
 const classes = {
     errorMsgVisible: 'visible',
     welcomePanelHidden: 'hidden'
@@ -45,6 +52,7 @@ let name = "";
 
 <<<<<<< Updated upstream
 <<<<<<< HEAD
+>>>>>>> master
 const registerName = e => {
   e.preventDefault();
 
@@ -63,16 +71,15 @@ const registerName = e => {
   }
 };
 
-// msg : string ;
 const registerSuccessRes = msg => {
   const welcomePanel = document.getElementsByClassName("welcome-background")[0];
 
   welcomePanel.classList.add("hidden");
-  userRegistered = true;
-  console.log(msg);
   game.startGame();
 };
 
+<<<<<<< HEAD
+=======
 const receiveMsgToAll = msg => {
   console.log("tutaj");
   const parent = document.getElementById("chat-list");
@@ -213,18 +220,13 @@ const cardThrownAll = card => {
   console.log("card was thrown on deck " + card);
 };
 
+>>>>>>> master
 document.getElementById("name-form").addEventListener("submit", registerName);
-// document
-//   .getElementsByClassName("new-card")[0]
-//   .addEventListener("click", initNewCard);
-document
-  .getElementsByClassName("reshuffle")[0]
-  .addEventListener("click", initReshuffle);
-document
-  .getElementsByClassName("end-turn")[0]
-  .addEventListener("click", endTurn);
-
 sock.on("registerRes", registerSuccessRes);
+<<<<<<< HEAD
+
+messageManager.initEvents();
+=======
 sock.on("message", receiveMsgToAll);
 sock.on("error-msg", error);
 
@@ -316,3 +318,4 @@ sock.on("new-card-all", newCardAll);
 sock.on("reshuffle", reshuffleAll);
 sock.on("card-thrown-all", cardThrownAll);
 >>>>>>> Stashed changes
+>>>>>>> master

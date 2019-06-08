@@ -1,11 +1,10 @@
-// import { dragElement } from "./utility";
+import { dragElement } from "./utility";
 
 export default class Card {
   constructor(name) {
     this._name = name; // card symbol, i. e. "2D", "3D"...
     this._element = document.createElement("div");
     this.fillElement();
-    this.initEventListener();
   }
 
   fillElement() {
@@ -14,7 +13,6 @@ export default class Card {
     this._element.classList.add(this._name, "card-element");
     this._element.style.overflow = "hidden";
     this._element.style.transform = "translate(0px, 0px)";
-    // overflow: hidden; transform: translate(0px, 0px);
   }
 
   addEvents() {
@@ -22,23 +20,8 @@ export default class Card {
     dragElement(this._element, this._name);
   }
 
-  getLink() {}
-
-  getCard() {}
-
-  animateOnDrag() {}
-
   getElement() {
     return this._element;
-  }
-
-  initEventListener() {
-    // document.addEventListener("carddropped", e => {
-    //   console.log("from card", e.detail);
-    //   if (e.detail.name === this._name) {
-    //     // this._element.parentNode.removeChild(this._element);
-    //   }
-    // });
   }
 
   removeHtmlElement() {
@@ -53,6 +36,8 @@ export default class Card {
     return this._element;
   }
 }
+<<<<<<< HEAD
+=======
 
 const dragElement = (elmnt, name) => {
   let height = 90; // height of a card
@@ -101,3 +86,4 @@ const dragElement = (elmnt, name) => {
 };
 
 // _p = Card.prototype;
+>>>>>>> master

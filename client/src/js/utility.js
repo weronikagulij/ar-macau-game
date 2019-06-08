@@ -1,4 +1,4 @@
-const dragElement = (elmnt, name) => {
+export function dragElement(elmnt, name) {
   let height = 90; // height of a card
   elmnt.onmousedown = dragMouseDown;
   elmnt.ontouchstart = dragMouseDown;
@@ -18,16 +18,32 @@ const dragElement = (elmnt, name) => {
     e = e || window.event;
     // e.preventDefault();
 
+    let clientY;
+    let clientX;
+
+    if (typeof e.clientX === "undefined") {
+      clientX = e.changedTouches[0].clientX;
+      clientY = e.changedTouches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
     // calculate the new cursor position:
-    let diffX = e.clientX - (elmnt.offsetLeft * 2 + elmnt.offsetWidth) / 2;
-    let diffY = e.clientY - (window.innerHeight * 2 - height) / 2;
+    let diffX = clientX - (elmnt.offsetLeft * 2 + elmnt.offsetWidth) / 2;
+    let diffY = clientY - (window.innerHeight * 2 - height) / 2;
     elmnt.style.overflow = "visible";
     elmnt.style.transform = "translate(" + diffX + "px, " + diffY + "px)";
   }
 
   function closeDragElement(e) {
+    let clientY =
+      typeof e.clientY === "undefined"
+        ? e.changedTouches[0].clientY
+        : e.clientY;
+
     // stop moving when mouse button is released:
-    let diffY = e.clientY - (window.innerHeight * 2 - height) / 2;
+    let diffY = clientY - (window.innerHeight * 2 - height) / 2;
 
     if ((elmnt.offsetHeight * 3) / 4 < Math.abs(diffY)) {
       // when card is dropped, fire event
@@ -42,9 +58,8 @@ const dragElement = (elmnt, name) => {
     elmnt.style.overflow = "hidden";
     elmnt.style.transform = "translate(0, 0)";
   }
-};
+}
 
-export default dragElement;
-
-// export default formatDate;
-// export default { formatDate, dragElement };
+export function formatDate(date) {
+  return `${date.slice(11, 16)}`;
+}
