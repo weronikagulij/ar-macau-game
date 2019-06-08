@@ -39,7 +39,6 @@ const registerSuccessRes = msg => {
   const welcomePanel = document.getElementsByClassName("welcome-background")[0];
 
   welcomePanel.classList.add("hidden");
-  console.log(msg);
   game.startGame();
 };
 

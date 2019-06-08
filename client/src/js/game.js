@@ -65,7 +65,6 @@ export default class Game {
     this._deck = new Deck();
     this._sock = sock;
     this._buttonsEvents = new ButtonsEvents(this._sock, classes);
-    console.log("tutajAAA ", classes);
   }
 
   startGame() {

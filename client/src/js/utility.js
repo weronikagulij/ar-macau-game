@@ -45,8 +45,6 @@ export function dragElement(elmnt, name) {
     // stop moving when mouse button is released:
     let diffY = clientY - (window.innerHeight * 2 - height) / 2;
 
-    console.log((elmnt.offsetHeight * 3) / 4, Math.abs(diffY));
-    console.log(clientY, window.innerHeight, window.innerWidth);
     if ((elmnt.offsetHeight * 3) / 4 < Math.abs(diffY)) {
       // when card is dropped, fire event
       let event = new CustomEvent("carddropped", { detail: { name: name } });
@@ -61,11 +59,6 @@ export function dragElement(elmnt, name) {
     elmnt.style.transform = "translate(0, 0)";
   }
 }
-
-// export default dragElement;
-
-// // export default formatDate;
-// // export default { formatDate, dragElement };
 
 export function formatDate(date) {
   return `${date.slice(11, 16)}`;
