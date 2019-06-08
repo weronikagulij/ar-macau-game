@@ -165,6 +165,7 @@ input::placeholder {
     display: flex;
     flex-direction: column;
     background: #fff;
+    word-break: break-all;
 
     animation-duration: 1s;
     animation-name: background-odd;
