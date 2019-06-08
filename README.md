@@ -13,7 +13,7 @@ To start the game you must have node installed. Go to the server folder and run 
 npm install
 npm start
 ```
-Application should start on localhost:8080.
+Application should start on localhost:8080. Application doesn't work on Google Chrome - that is because Chrome needs ssl to let the camera to work. It's best to try it on Mozilla Firefox.
 
 # Created with
 
