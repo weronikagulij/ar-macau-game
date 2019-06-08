@@ -1,0 +1,11 @@
+---- mvp ----
+- sending message to a player that has a turn now
+- styling
+- error when dropping a card on mobile
+- for small screens cards are too big
+
+- when user disconnects, get his cards back
+
+---- features ----
+- different servers for all group of players
+- custom domain ? 
