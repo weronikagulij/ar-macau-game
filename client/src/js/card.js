@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { dragElement } from "./utility";
-=======
-// import { dragElement } from "./utility";
->>>>>>> master
 
 export default class Card {
   constructor(name) {
