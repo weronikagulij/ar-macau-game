@@ -13,9 +13,13 @@ To start the game you must have node installed. Go to the server folder and run 
 npm install
 npm start
 ```
-Application should start on localhost:8080. Application doesn't work on Google Chrome - that is because Chrome needs ssl to let the camera to work. It's best to try it on Mozilla Firefox.
+Application should start on localhost:8080. To see the deck you must direct the camera to the following image
 
-# Created with
+![alt text](https://i.imgur.com/aieLXEn.png)
+
+Application doesn't work on Google Chrome. It's best to try it on Mozilla Firefox.
+
+### Created with
 
 Application created with Node.js and Express.js, Socket.IO on server-side and AR.js, Webpack, SCSS on client-side.
 
