@@ -9,15 +9,17 @@ No checking of the rules in the game - players set the rules themselves and keep
 ### Quickstart
 
 To start the game you must have node installed. Go to the server folder and run in the console
+
 ```
 npm install
 npm start
 ```
-Application should start on localhost:8080. To see the deck you must direct the camera to the following image
+
+And run the same commands on the device you want to run application. Application should start on localhost:8080. To see the deck you must direct the camera to the following image
 
 ![alt text](https://i.imgur.com/aieLXEn.png)
 
-Application doesn't work on Google Chrome. It's best to try it on Mozilla Firefox.
+Application may not work on Google Chrome. It's best to try it on Mozilla Firefox.
 
 ### Created with
 
