@@ -15,7 +15,7 @@ npm install
 npm start
 ```
 
-And run the same commands on the device you want to run application. Application should start on localhost:8080. To see the deck you must direct the camera to the following image
+And run the same commands in the client folder on the device you want to run application. Application should start on localhost:8080. To see the deck you must direct the camera to the following image
 
 ![alt text](https://i.imgur.com/aieLXEn.png)
 
